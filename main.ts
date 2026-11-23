@@ -15,6 +15,13 @@ function validateEntry(text: string): number {
   if (text !== text.trim()) {
     throw new Error("entry must not start or end with whitespace");
   }
+  // One sentence only: exactly one sentence terminator, and it ends the text.
+  const terminators = text.match(/[.!?](?=\s|$)/g) ?? [];
+  if (terminators.length !== 1 || !/[.!?]$/.test(text)) {
+    throw new Error(
+      `entry must be a single sentence, got ${terminators.length} sentence terminators`,
+    );
+  }
   return points;
 }
 
